@@ -10,36 +10,25 @@ import SwiftUI
 struct StartView: View {
     
     @ObservedObject var workoutManager: WorkoutManager
-    @State var timeRemaining = 3
-    var timer = Timer.publish(every: 1, on: .main, in: .common)
-    @State private var startWorkout = false
     
     var body: some View {
-        ZStack {
-            if (startWorkout) {
-                Text("\(timeRemaining)")
+        VStack {
+            Text(workoutManager.info.name)
+                .font(.title)
+                .padding(.vertical, 5)
+            
+            Text("\(workoutManager.info.duration) \(workoutManager.info.type == .count ? "reps" : "sec.")")
+                .font(.headline)
+            
+            Spacer()
+            
+            NavigationLink(destination: WorkoutView(workoutManager: workoutManager)) {
+                Text("Start")
                     .font(.title)
-                    .onReceive(timer) { _ in
-                        if timeRemaining > 0 {
-                            self.timeRemaining -= 1
-                        }
-                    }
-            } else {
-                Button(action: {
-                    startTimer()
-                    self.startWorkout.toggle()
-                }, label: {
-                    Text("Start")
-                        .font(.title)
-                        .padding()
-                })
+                    .foregroundColor(.green)
+                    .padding()
             }
         }
-    }
-    
-    func startTimer() {
-        self.timeRemaining = 3
-        let _ = self.timer.connect()
     }
 }
 

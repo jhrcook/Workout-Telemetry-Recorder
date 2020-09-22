@@ -18,33 +18,26 @@ struct WorkoutDurationSelectionView: View {
     @State private var startWorkout = false
     
     var body: some View {
-        ZStack {
+        VStack {
+            
+            Text("Workout duration")
+            
+            Picker("Workout duration", selection: $selectedDuration) {
+                ForEach(0..<121) { i in
+                    Text("\(i)").font(.system(size: 26))
+                }
+            }
+            .labelsHidden()
             
             NavigationLink(
-                destination: StartView(workoutManager: self.workoutManager),
-                isActive: $startWorkout) {
-                EmptyView()
-            }.hidden()
-            
-            
-            VStack {
-                
-                Picker("Workout duration", selection: $selectedDuration) {
-                    ForEach(0..<121) { i in
-                        Text("\(i)")
-                    }
-                }
-                
-                Button(action: {
-                    self.workoutManager.info.duration = selectedDuration
-                    self.startWorkout.toggle()
-                }, label: {
-                    Text("OK")
-                })
+                destination: StartView(workoutManager: self.workoutManager)) {
+                Text("OK")
+                    .foregroundColor(.white)
+                    .font(.headline)
             }
-            .onAppear {
-                self.selectedDuration = workoutManager.info.duration
         }
+        .onAppear {
+            self.selectedDuration = workoutManager.info.duration
         }
     }
 }
