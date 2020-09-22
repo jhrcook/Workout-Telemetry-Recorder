@@ -12,29 +12,51 @@ import CoreMotion
 struct WorkoutView: View {
     
     @ObservedObject var workoutManager: WorkoutManager
+    var dataManager = TelemetryDataManager()
     
     let motionManager = CMMotionManager()
     let queue = OperationQueue()
     
-    @State private var pitch: Double = 0
-    @State private var yaw: Double = 0
-    @State private var roll: Double = 0
+    @State var amountOfDataCollected: Int = 0
+    
+    @State private var workoutComplete = false
     
     var body: some View {
-        VStack {
-            Text(String(format: "Pitch: %.3f", pitch))
-            Text(String(format: "Yaw: %.3f", yaw))
-            Text(String(format: "Roll: %.3f", roll))
-        }
-        .navigationBarBackButtonHidden(true)
-        .onAppear {
-            startMotionManagerCollection()
+        ZStack {
+            VStack {
+                Spacer()
+                
+                Button(action: {
+                    stopMotionManagerCollection()
+                    workoutComplete.toggle()
+                }) {
+                    Text("Done")
+                }
+                
+                Spacer()
+                Text("Num. data points: \(amountOfDataCollected)")
+                    .font(.footnote)
+            }
+            .navigationBarBackButtonHidden(true)
+            .onAppear {
+                startMotionManagerCollection()
+            }
+            
+            NavigationLink(
+                destination: PostWorkoutView(dataManager: dataManager),
+                isActive: $workoutComplete) {
+                EmptyView()
+            }
+            .opacity(0)
         }
     }
-    
-    
+}
+
+
+
+extension WorkoutView {
     func startMotionManagerCollection() {
-        self.motionManager.startDeviceMotionUpdates(to: queue) { (data: CMDeviceMotion?, error: Error?) in
+        motionManager.startDeviceMotionUpdates(to: queue) { (data: CMDeviceMotion?, error: Error?) in
             guard let data = data else {
                 if let error = error {
                     print("Error: \(error.localizedDescription)")
@@ -44,15 +66,20 @@ struct WorkoutView: View {
                 return
             }
             
-            let attitude: CMAttitude = data.attitude
+            dataManager.updateHardwareData(data: data)
             DispatchQueue.main.async {
-                self.pitch = attitude.pitch
-                self.yaw = attitude.yaw
-                self.roll = attitude.roll
+                amountOfDataCollected = dataManager.numberOfHardwareDatapoints
             }
         }
     }
+    
+    
+    func stopMotionManagerCollection() {
+        motionManager.stopDeviceMotionUpdates()
+    }
 }
+
+
 
 struct WorkoutView_Previews: PreviewProvider {
     static let workoutChoices = WorkoutChoices()
