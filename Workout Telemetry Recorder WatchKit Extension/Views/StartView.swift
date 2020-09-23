@@ -19,6 +19,7 @@ struct StartView: View {
             
             Text("\(workoutManager.info.duration) \(workoutManager.info.type == .count ? "reps" : "sec.")")
                 .font(.headline)
+                .padding(.bottom, 5)
             
             Spacer()
             

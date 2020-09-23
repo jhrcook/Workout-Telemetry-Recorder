@@ -26,16 +26,21 @@ struct WorkoutView: View {
             VStack {
                 Spacer()
                 
+                Text("Number of telemetry data points")
+                    .multilineTextAlignment(.center)
+                    .padding(.vertical, 5)
+                Text("\(amountOfDataCollected)")
+                    .font(.title)
+                    .foregroundColor(.green)
+                
+                Spacer()
+                
                 Button(action: {
                     stopMotionManagerCollection()
                     workoutComplete.toggle()
                 }) {
                     Text("Done")
                 }
-                
-                Spacer()
-                Text("Num. data points: \(amountOfDataCollected)")
-                    .font(.footnote)
             }
             .navigationBarBackButtonHidden(true)
             .onAppear {
@@ -56,6 +61,7 @@ struct WorkoutView: View {
 
 extension WorkoutView {
     func startMotionManagerCollection() {
+        
         motionManager.startDeviceMotionUpdates(to: queue) { (data: CMDeviceMotion?, error: Error?) in
             guard let data = data else {
                 if let error = error {
@@ -66,16 +72,31 @@ extension WorkoutView {
                 return
             }
             
-            dataManager.updateHardwareData(data: data)
+            dataManager.updateMotionData(data: data)
             DispatchQueue.main.async {
                 amountOfDataCollected = dataManager.numberOfHardwareDatapoints
             }
         }
+        
+        motionManager.startAccelerometerUpdates(to: queue) { (data: CMAccelerometerData?, error: Error?) in
+            guard let data = data else {
+                if let error = error {
+                    print("Error: \(error.localizedDescription)")
+                } else {
+                    print("Error in data collection but no error thrown.")
+                }
+                return
+            }
+            
+            dataManager.updateAccelerationData(data: data)
+        }
+        
     }
     
     
     func stopMotionManagerCollection() {
         motionManager.stopDeviceMotionUpdates()
+        motionManager.stopAccelerometerUpdates()
     }
 }
 

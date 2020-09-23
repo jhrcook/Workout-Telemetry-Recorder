@@ -12,7 +12,7 @@ struct PostWorkoutView: View {
     
     var dataManager: TelemetryDataManager
     
-    @State private var iCloudSyncComplete = false
+    @State private var phoneSyncIsComplete = false
 
     
     var body: some View {
@@ -22,7 +22,6 @@ struct PostWorkoutView: View {
                 
                 Button(action: {
                     saveAFile()
-                    iCloudSyncComplete.toggle()
                 }, label: {
                     Text("Save a file!")
                 })
@@ -31,15 +30,19 @@ struct PostWorkoutView: View {
             
             NavigationLink(
                 destination: ContentView(),
-                isActive: $iCloudSyncComplete) {
+                isActive: $phoneSyncIsComplete) {
                 EmptyView()
             }
             .opacity(0)
         }
     }
-    
+}
+
+
+extension PostWorkoutView {
     func saveAFile() {
-        print("no can do...")
+        // TODO: Link with iPhone and send data to then be saved to iCloud.
+        phoneSyncIsComplete = true
     }
 }
 
