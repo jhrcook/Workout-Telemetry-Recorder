@@ -1,16 +1,15 @@
 //
 //  ContentView.swift
-//  Workout Telemetry Recorder WatchKit Extension
+//  Workout Telemetry Recorder (phone)
 //
-//  Created by Joshua on 9/21/20.
+//  Created by Joshua on 9/23/20.
 //
 
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-//        WorkoutListView().navigationBarBackButtonHidden(true)
-        PostWorkoutView(dataManager: TelemetryDataManager())
+        WatchCommunicationView()
     }
 }
 

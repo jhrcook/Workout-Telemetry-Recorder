@@ -7,11 +7,13 @@
 
 import SwiftUI
 
+
 struct PostWorkoutView: View {
     
     var dataManager: TelemetryDataManager
     
     @State private var iCloudSyncComplete = false
+
     
     var body: some View {
         ZStack {
@@ -19,9 +21,10 @@ struct PostWorkoutView: View {
                 Text("Syncing with iCloud...")
                 
                 Button(action: {
+                    saveAFile()
                     iCloudSyncComplete.toggle()
                 }, label: {
-                    Text("Skip!")
+                    Text("Save a file!")
                 })
             }
             .navigationBarBackButtonHidden(true)
@@ -33,6 +36,10 @@ struct PostWorkoutView: View {
             }
             .opacity(0)
         }
+    }
+    
+    func saveAFile() {
+        print("no can do...")
     }
 }
 
