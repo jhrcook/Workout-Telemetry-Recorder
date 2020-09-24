@@ -29,7 +29,7 @@
 	<true/>
 	<key>NSUbiquitousContainers</key>
 	<dict>
-		<key>iCloud.$(PRODUCT_BUNDLE_IDENTIFIER)</key>
+		<key>iCloud.WatchTelemetry</key>
 		<dict>
 			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
 			<true/>
