@@ -2,6 +2,8 @@
 
 ### A simple watch-only app for recording telemetry and workout data to iCloud for further data analysis.
 
+**<span style="color:red">This app had to be restarted in order to get iCloud Drive saving to work. You can find the new app [here](https://github.com/jhrcook/TelemetryRecorder).</span>**
+
 ![Swift](https://img.shields.io/badge/Swift-Swift_Project-FA7343.svg?style=flat&logo=swift)
 ![iOS](https://img.shields.io/badge/watchOS-App-999999.svg?style=flat&logo=apple)  
 [![jhc github](https://img.shields.io/badge/GitHub-jhrcook-181717.svg?style=flat&logo=github)](https://github.com/jhrcook)
